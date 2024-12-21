@@ -1,13 +1,31 @@
 import React from 'react';
 
-function Sidebar({ onNavChange }) {
+function Sidebar({ onPageChange, currentPage }) {
   return (
     <aside className="sidebar">
       <h3>Menu</h3>
-      <nav className="sidebar-nav">
-        <a href="#employees" onClick={() => onNavChange('employees')}>Liste des Employés</a>
-        <a href="#trucks" onClick={() => onNavChange('trucks')}>Liste des Camions</a>
-        <a href="#deliveries" onClick={() => onNavChange('deliveries')}>Livraisons en Cours</a>
+      <nav>
+        <a
+          href="#employees"
+          onClick={() => onPageChange('employees')}
+          className={currentPage === 'employees' ? 'active' : ''}
+        >
+          Employés
+        </a>
+        <a
+          href="#trucks"
+          onClick={() => onPageChange('trucks')}
+          className={currentPage === 'trucks' ? 'active' : ''}
+        >
+          Camions
+        </a>
+        <a
+          href="#deliveries"
+          onClick={() => onPageChange('deliveries')}
+          className={currentPage === 'deliveries' ? 'active' : ''}
+        >
+          Livraisons
+        </a>
       </nav>
     </aside>
   );

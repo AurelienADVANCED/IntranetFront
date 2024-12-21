@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function TrucksPage() {
   const [trucks, setTrucks] = useState([]);
 
+  // Remplace par l'URL de ton endpoint pour récupérer la liste des camions
+  const API_URL = 'https://x35h5as2mc.execute-api.eu-central-1.amazonaws.com/prod/trucks';
+
   useEffect(() => {
-    fetch('https://your-api.execute-api.region.amazonaws.com/prod/trucks')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur réseau');
+    fetch(API_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Erreur lors de la récupération des camions');
         }
-        return response.json();
+        return res.json();
       })
-      .then(data => {
-        setTrucks(data);
-      })
-      .catch(error => {
-        console.error('Erreur en récupérant les camions:', error);
+      .then((data) => setTrucks(data))
+      .catch((err) => {
+        console.error(err);
       });
   }, []);
 
@@ -26,18 +27,18 @@ function TrucksPage() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Modèle</th>
             <th>Immatriculation</th>
+            <th>Type</th>
             <th>Disponibilité</th>
           </tr>
         </thead>
         <tbody>
-          {trucks.map(truck => (
+          {trucks.map((truck) => (
             <tr key={truck.id}>
               <td>{truck.id}</td>
-              <td>{truck.model}</td>
-              <td>{truck.licensePlate}</td>
-              <td>{truck.available ? 'Oui' : 'Non'}</td>
+              <td>{truck.plateNumber}</td>
+              <td>{truck.type}</td>
+              <td>{truck.isAvailable ? 'Oui' : 'Non'}</td>
             </tr>
           ))}
         </tbody>

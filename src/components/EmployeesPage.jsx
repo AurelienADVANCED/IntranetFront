@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
 
+  // Remplace cette URL par celle de ton API Gateway (ex : https://x35h5as2mc.execute-api.eu-central-1.amazonaws.com/prod/employes)
+  const API_URL = 'https://x35h5as2mc.execute-api.eu-central-1.amazonaws.com/prod/employes';
+
   useEffect(() => {
-    fetch('https://your-api.execute-api.region.amazonaws.com/prod/employees')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur réseau');
+    fetch(API_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Erreur lors de la récupération des employés');
         }
-        return response.json();
+        return res.json();
       })
-      .then(data => {
-        setEmployees(data);
-      })
-      .catch(error => {
-        console.error('Erreur en récupérant les employés:', error);
+      .then((data) => setEmployees(data))
+      .catch((err) => {
+        console.error(err);
       });
   }, []);
 
@@ -32,7 +33,7 @@ function EmployeesPage() {
           </tr>
         </thead>
         <tbody>
-          {employees.map(emp => (
+          {employees.map((emp) => (
             <tr key={emp.id}>
               <td>{emp.id}</td>
               <td>{emp.name}</td>

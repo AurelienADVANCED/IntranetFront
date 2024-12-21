@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function DeliveriesPage() {
   const [deliveries, setDeliveries] = useState([]);
 
+  // Remplace par l'URL pour récupérer la liste des livraisons
+  const API_URL = 'https://x35h5as2mc.execute-api.eu-central-1.amazonaws.com/prod/deliveries';
+
   useEffect(() => {
-    fetch('https://your-api.execute-api.region.amazonaws.com/prod/deliveries')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur réseau');
+    fetch(API_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Erreur lors de la récupération des livraisons');
         }
-        return response.json();
+        return res.json();
       })
-      .then(data => {
-        setDeliveries(data);
-      })
-      .catch(error => {
-        console.error('Erreur en récupérant les livraisons:', error);
+      .then((data) => setDeliveries(data))
+      .catch((err) => {
+        console.error(err);
       });
   }, []);
 
@@ -26,20 +27,22 @@ function DeliveriesPage() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Client</th>
-            <th>Adresse</th>
+            <th>Date de Commande</th>
             <th>Date de Livraison</th>
-            <th>Statut</th>
+            <th>Status</th>
+            <th>Quantité</th>
+            <th>Camion</th>
           </tr>
         </thead>
         <tbody>
-          {deliveries.map(del => (
-            <tr key={del.id}>
-              <td>{del.id}</td>
-              <td>{del.customerName}</td>
-              <td>{del.address}</td>
-              <td>{del.deliveryDate}</td>
-              <td>{del.status}</td>
+          {deliveries.map((delivery) => (
+            <tr key={delivery.id}>
+              <td>{delivery.id}</td>
+              <td>{delivery.orderDate}</td>
+              <td>{delivery.deliveryDate}</td>
+              <td>{delivery.status}</td>
+              <td>{delivery.quantity}</td>
+              <td>{delivery.truckId}</td>
             </tr>
           ))}
         </tbody>
